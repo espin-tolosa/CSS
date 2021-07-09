@@ -11,8 +11,6 @@
       <div class="control-panel">
         Control Panel
         <div class="control-panel body"></div>
-
-        <div class="event">Test Task</div>
       </div>
       <div class="grid-container">
         <h1 class="month">July</h1>
@@ -26,49 +24,64 @@
           <li class="weekday">Sunday</li>
         </ul>
         <ul class="monthdays">
-          <li class="day first-day">1</li>
-          <li class="day">2</li>
-          <li class="day">3</li>
-          <li class="day">4</li>
-          <li class="day">5</li>
-          <li class="day">6</li>
-          <li class="day">7</li>
-          <li class="day">8</li>
-          <li class="day">9</li>
-          <li class="day">10</li>
+          <li class="day first-day"><div class="day number">1</div></li>
+          <li class="day"><div class="day number">2</div></li>
+          <li class="day"><div class="day number">3</div></li>
+          <li class="day"><div class="day number">4</div></li>
+          <li class="day"><div class="day number">5</div></li>
+          <li class="day"><div class="day number">6</div></li>
+          <li class="day"><div class="day number">7</div></li>
+          <li class="day"><div class="day number">8</div></li>
+          <li class="day"><div class="day number">9</div></li>
+          <li class="day"><div class="day number">10</div></li>
           <li class="day">
-            11
-            <div class="event">Test Task</div>
+            <div id="bigEvent"></div>
+            <div class="day number">11</div>
+            <div class="event">Test Task 2</div>
+            <div class="event">Test Task 3</div>
+            <div class="event">Test Task 4</div>
+            <div class="event">Test Task 5</div>
           </li>
 
-          <li class="day">12</li>
-          <li class="day">13</li>
-          <li class="day">14</li>
-          <li class="day">15</li>
-          <li class="day">16</li>
-          <li class="day">17</li>
-          <li class="day">18</li>
-          <li class="day">19</li>
-          <li class="day">20</li>
-          <li class="day">21</li>
-          <li class="day">22</li>
-          <li class="day">23</li>
-          <li class="day">24</li>
-          <li class="day">25</li>
-          <li class="day">26</li>
-          <li class="day">27</li>
-          <li class="day">28</li>
-          <li class="day">29</li>
-          <li class="day">30</li>
-          <li class="day">31</li>
+          <li class="day"><div class="day number">12</div></li>
+          <li class="day"><div class="day number">13</div></li>
+          <li class="day"><div class="day number">14</div></li>
+          <li class="day"><div class="day number">15</div></li>
+          <li class="day"><div class="day number">16</div></li>
+          <li class="day"><div class="day number">17</div></li>
+          <li class="day"><div class="day number">18</div></li>
+          <li class="day"><div class="day number">19</div></li>
+          <li class="day"><div class="day number">20</div></li>
+          <li class="day"><div class="day number">21</div></li>
+          <li class="day"><div class="day number">22</div></li>
+          <li class="day"><div class="day number">23</div></li>
+          <li class="day"><div class="day number">24</div></li>
+          <li class="day"><div class="day number">25</div></li>
+          <li class="day"><div class="day number">26</div></li>
+          <li class="day"><div class="day number">27</div></li>
+          <li class="day"><div class="day number">28</div></li>
+          <li class="day"><div class="day number">29</div></li>
+          <li class="day"><div class="day number">30</div></li>
+          <li class="day"><div class="day number">31</div></li>
         </ul>
       </div>
     </div>
+
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        border-radius: 10px;
+      }
+      #bigEvent {
+        position: absolute;
+        text-align: center;
+        background-color: lightgoldenrodyellow;
+      }
+      #bigEvent .event {
+        font-size: 3rem;
+        padding: 20px;
       }
       .flex-container {
         display: flex;
@@ -80,6 +93,7 @@
         width: 200px;
         min-height: 100vh;
         border: 1px solid black;
+        display: none;
       }
       .month {
         text-align: center;
@@ -107,8 +121,29 @@
         padding: 1px;
         text-align: left;
         font-size: calc(10px + 0.5vw);
-        min-height: 80px;
+        min-height: 150px;
+        text-align: end;
+        transition: 0.3s;
       }
+      .day:hover {
+        background-color: lightgreen;
+      }
+      .day .number {
+        background-color: white;
+        min-height: 0;
+        min-width: 0;
+        border: 1px solid black;
+        width: 2rem;
+        height: 1.5rem;
+        text-align: center;
+        margin-left: 2px;
+        box-shadow: 0 0 1px 1px gray;
+      }
+      .event {
+        padding: 5px 10px 5px 10px;
+        border: 1px solid black;
+      }
+
       .first-day {
         grid-column-start: 3;
       }
@@ -128,7 +163,31 @@
         });
       });
 
-      const events = document.getElementsByClassName("event");
+      const days = Array.from(document.getElementsByClassName("day"));
+      const bigEvent = document.getElementById("bigEvent");
+
+      days.forEach((day) => {
+        day.addEventListener("click", () => {
+          bigEvent.innerHTML = "";
+          const events = Array.from(day.getElementsByClassName("event"));
+          events.forEach((event) => {
+            cloneDay = event.cloneNode(true);
+
+            bigEvent.appendChild(cloneDay);
+          });
+        });
+      });
+
+      // const events = Array.from(document.getElementsByClassName("event"));
+      // events.forEach((event) => {
+      //   event.addEventListener("click", (event) => {
+      //     const cloneEvent = event.target.cloneNode(true);
+      //     const bigEvent = document.getElementsByClassName("bigEvent")[0];
+      //     //bigEvent.appendChild(cloneEvent);
+      //     console.log(bigEvent);
+      //     bigEvent.appendChild(cloneEvent);
+      //   });
+      // });
     </script>
   </body>
 </html>
